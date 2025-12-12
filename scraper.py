@@ -113,5 +113,5 @@ def scrape(link, limit):
 
 
 if __name__ == "__main__":
-    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 10)
+    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 100)
     
