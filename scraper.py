@@ -20,11 +20,11 @@ def get_links(url, limit):
 def get_frequencies(links):
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; scraper/1.0)"})
-
     for link in links:
         href = link.get("href")
         if not href:
             continue
+        print("-" * 64)
         print(f"Fetching: {href}")
         try:
             resp = session.get(href, timeout=10)
@@ -52,12 +52,15 @@ def get_frequencies(links):
             app_text = link.get_text(strip=True)
         for language in languages.keys():
             if check_present(language, app_text):
+                print(f"Found language: {language}")
                 languages[language] += 1
         for framework in frameworks.keys():
             if check_present(framework, app_text):
+                print(f"Found framework: {framework}")
                 frameworks[framework] += 1
         for library in libraries.keys():
             if check_present(library, app_text):
+                print(f"Found library: {library}")
                 libraries[library] += 1
 
 
