@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 import matplotlib.pyplot as plt
+import re
+import string
 from keywords import languages, frameworks, libraries
 
 
@@ -60,7 +62,9 @@ def get_frequencies(links):
 
 
 def check_present(key, text):
-    return key.lower() in text.lower()
+    punct = re.escape(string.punctuation)
+    pattern = rf'(?:(?<=^)|(?<=[\s{punct}]))' + re.escape(key) + rf'(?:(?=$)|(?=[\s{punct}]))' # This is a regex, I have no idea how this works, but it only mathces the key if it is surrounded by whitespace or punctuation
+    return re.search(pattern, text, flags=re.IGNORECASE) is not None
 
 
 def write(out):
