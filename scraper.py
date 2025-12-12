@@ -4,17 +4,16 @@ import csv
 from keywords import languages, frameworks, libraries
 
 
-def get_links(url):
+def get_links(url, limit):
     link = requests.get(url)
     soup = BeautifulSoup(link.text, 'html.parser')
     div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
     table = div.find("table") # Get internship listing
-    links = table.find_all("a") # Get all links in internship listing
+    links = table.find_all("a", limit = limit) # Get all links in internship listing
     return links
 
 
 def get_frequencies(links):
-    i = 0
     for link in links:
         href = link.get('href')
         if not href:
@@ -38,9 +37,6 @@ def get_frequencies(links):
         for library in libraries.keys():
             if library.lower() in lower_text:
                 libraries[library] += 1
-        i += 1
-        if i > 20:
-            break
 
 
 def write(out):
@@ -61,7 +57,6 @@ def write(out):
 
 
 if __name__ == "__main__":
-    links = get_links("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file")
+    links = get_links("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 50)
     get_frequencies(links)
     write("frequencies.csv")
-    pass
