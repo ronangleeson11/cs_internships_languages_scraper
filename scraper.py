@@ -3,7 +3,7 @@ import requests
 import csv
 from urllib.parse import urljoin
 
-URL = requests.get ("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file")
+URL = requests.get("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file")
 soup = BeautifulSoup(URL.text, 'html.parser')
 div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # README
 table = div.find("table") # Internship listing
@@ -45,24 +45,21 @@ libraries = {
     "Lodash": 0
 }
 
-base = "https://github.com"
+i = 0
 
 for link in links:
     href = link.get('href')
     if not href:
         continue
-    full_url = urljoin(base, href)
-    print(f"Fetching: {full_url}")
+    print(f"Fetching: {href}")
     try:
-        resp = requests.get(full_url, timeout=10)
+        resp = requests.get(href, timeout=10)
         resp.raise_for_status()
         page_soup = BeautifulSoup(resp.text, 'html.parser')
         app_text = page_soup.get_text(separator=' ', strip=True)
     except Exception as e:
-        print(f"Failed to fetch {full_url}: {e}")
-        # fallback to link text if the page can't be fetched
+        print(f"Failed to fetch {href}: {e}")
         app_text = link.get_text(strip=True)
-
     lower_text = app_text.lower()
     for language in languages.keys():
         if language.lower() in lower_text:
@@ -73,6 +70,9 @@ for link in links:
     for library in libraries.keys():
         if library.lower() in lower_text:
             libraries[library] += 1
+    i += 1
+    if i > 20:
+        break        
 
 with open("out.csv", "w", newline='', encoding='utf-8') as out:
     writer = csv.writer(out)
