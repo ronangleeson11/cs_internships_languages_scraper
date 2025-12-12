@@ -25,20 +25,24 @@ def get_frequencies(links):
             resp = requests.get(href, timeout=10)
             resp.raise_for_status()
             page_soup = BeautifulSoup(resp.text, 'html.parser')
-            app_text = page_soup.get_text(separator=' ', strip=True)
+            app_text = page_soup.get_text(strip=True)
+            print(app_text[:100] + "...")
         except Exception as e:
             print(f"Failed to fetch {href}: {e}")
             app_text = link.get_text(strip=True)
-        lower_text = app_text.lower()
         for language in languages.keys():
-            if language.lower() in lower_text:
+            if language in app_text:
                 languages[language] += 1
         for framework in frameworks.keys():
-            if framework.lower() in lower_text:
+            if framework in app_text:
                 frameworks[framework] += 1
         for library in libraries.keys():
-            if library.lower() in lower_text:
+            if library in app_text:
                 libraries[library] += 1
+
+
+def check_present(key, text):
+    return key.lower() in text.lower()
 
 
 def write(out):
@@ -84,5 +88,5 @@ def scrape(link, limit):
 
 
 if __name__ == "__main__":
-    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 50)
+    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 10)
     
