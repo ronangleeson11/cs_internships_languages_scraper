@@ -1,10 +1,10 @@
 languages = {
     "Python": 0,
-    "JavaScript": 0,
     "Java": 0,
     "C": 0,
     "C++": 0,
     "C#": 0,
+    "JavaScript": 0,
     "Ruby": 0,
     "Go": 0,
     "PHP": 0,
@@ -20,9 +20,9 @@ frameworks = {
     "React": 0,
     "Angular": 0,
     "Vue": 0,
-    "Spring": 0,
-    "Laravel": 0,
+    "Node": 0,
     "Rails": 0,
+    "Laravel": 0,
     "ASP.NET": 0
 }
 
