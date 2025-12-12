@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
+import matplotlib.pyplot as plt
 from keywords import languages, frameworks, libraries
 
 
@@ -56,7 +57,31 @@ def write(out):
             writer.writerow([library[0], library[1]])
 
 
-if __name__ == "__main__":
-    links = get_links("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 50)
+def plot():
+    def plot_category(category_dict, title):
+        items = sorted(category_dict.items(), key=lambda e: e[1], reverse=True)
+        names = [item[0] for item in items]
+        values = [item[1] for item in items]
+        plt.bar(names, values, color='skyblue')
+        plt.title(title)
+        plt.xlabel('Items')
+        plt.ylabel('Frequencies')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
+    plot_category(languages, "Programming Languages Frequency")
+    plot_category(frameworks, "Frameworks Frequency")
+    plot_category(libraries, "Libraries Frequency")
+
+
+def scrape(link, limit):
+    links = get_links(link, limit)
     get_frequencies(links)
     write("frequencies.csv")
+    plot()
+
+
+if __name__ == "__main__":
+    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 10)
+    
