@@ -16,28 +16,46 @@ def get_links(url, limit):
 
 
 def get_frequencies(links):
+    session = requests.Session()
+    session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; scraper/1.0)"})
+
     for link in links:
         href = link.get("href")
         if not href:
             continue
         print(f"Fetching: {href}")
         try:
-            resp = requests.get(href, timeout=10)
+            resp = session.get(href, timeout=10)
             resp.raise_for_status()
             page_soup = BeautifulSoup(resp.text, 'html.parser')
-            app_text = page_soup.get_text(strip=True)
+            app_text = page_soup.get_text(separator=' ', strip=True)
+            if not app_text.strip(): # Fallback 1: check meta description
+                print("Falling back to meta description")
+                meta = page_soup.find('meta', attrs={"name": "description"})
+                if meta and meta.get('content'):
+                    app_text = meta.get('content').strip()
+                else:
+                    og = page_soup.find('meta', attrs={"property": "og:description"})
+                    if og and og.get('content'):
+                        app_text = og.get('content').strip()
+            if not app_text.strip(): # Fallback 2: check largest text-containing element
+                print("Falling back to largest text-containing element")
+                candidates = page_soup.find_all(['main', 'article', 'div'])
+                if candidates:
+                    largest = max(candidates, key=lambda t: len(t.get_text(strip=True)))
+                    app_text = largest.get_text(separator=' ', strip=True)
             print(app_text[:100] + "...")
         except Exception as e:
             print(f"Failed to fetch {href}: {e}")
             app_text = link.get_text(strip=True)
         for language in languages.keys():
-            if language in app_text:
+            if check_present(language, app_text):
                 languages[language] += 1
         for framework in frameworks.keys():
-            if framework in app_text:
+            if check_present(framework, app_text):
                 frameworks[framework] += 1
         for library in libraries.keys():
-            if library in app_text:
+            if check_present(library, app_text):
                 libraries[library] += 1
 
 
