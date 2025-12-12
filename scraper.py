@@ -21,7 +21,8 @@ languages = {
     "PHP": 0,
     "Swift": 0,
     "Kotlin": 0,
-    "TypeScript": 0
+    "TypeScript": 0,
+    "SQL": 0
 }
 
 frameworks = {
@@ -76,14 +77,15 @@ for link in links:
 
 with open("out.csv", "w", newline='', encoding='utf-8') as out:
     writer = csv.writer(out)
-    languages_sorted = sorted(languages.items(), key=lambda e: e[1])
-    frameworks_sorted = sorted(frameworks.items(), key=lambda e: e[1])
-    libraries_sorted = sorted(libraries.items(), key=lambda e: e[1])
-    # writer.writerow(["Languages"])
+    languages_sorted = sorted(languages.items(), key=lambda e: e[1], reverse=True)
+    frameworks_sorted = sorted(frameworks.items(), key=lambda e: e[1], reverse=True)
+    libraries_sorted = sorted(libraries.items(), key=lambda e: e[1], reverse=True)
+    writer.writerow(["Languages", "Frequency"])
     for (language) in languages_sorted:
         writer.writerow([language[0], language[1]])
+    writer.writerow(["Frameworks", "Frequency"])    
     for (framework) in frameworks_sorted:
         writer.writerow([framework[0], framework[1]])
+    writer.writerow(["Libraries", "Frequency"])    
     for (library) in libraries_sorted:
         writer.writerow([library[0], library[1]])
-    # writer.writerow([link.text, link.get('href')])
