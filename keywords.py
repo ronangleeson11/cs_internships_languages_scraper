@@ -23,7 +23,7 @@ frameworks = {
     "Node": 0,
     "Rails": 0,
     "Laravel": 0,
-    "ASP.NET": 0
+    ".NET": 0
 }
 
 libraries = {

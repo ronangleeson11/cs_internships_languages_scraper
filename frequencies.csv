@@ -14,6 +14,7 @@ Kotlin,2
 PHP,0
 Frameworks,Frequency
 React,10
+.NET,8
 Angular,6
 Node,3
 Django,2
@@ -21,7 +22,6 @@ Flask,2
 Vue,1
 Rails,1
 Laravel,0
-ASP.NET,0
 Libraries,Frequency
 jQuery,2
 TensorFlow,1
