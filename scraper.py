@@ -10,13 +10,14 @@ def get_links(url, limit):
     soup = BeautifulSoup(link.text, 'html.parser')
     div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
     table = div.find("table") # Get internship listing
-    links = table.find_all("a", limit = limit) # Get all links in internship listing
-    return links
+    all_links = table.find_all("a") # Get all links in internship listing
+    links = [link for link in all_links if "simplify.jobs" not in link.get("href").lower()]
+    return links[:limit]
 
 
 def get_frequencies(links):
     for link in links:
-        href = link.get('href')
+        href = link.get("href")
         if not href:
             continue
         print(f"Fetching: {href}")
@@ -57,7 +58,7 @@ def write(out):
             writer.writerow([library[0], library[1]])
 
 
-def plot():
+def plot_bar():
     def plot_category(category_dict, title):
         items = sorted(category_dict.items(), key=lambda e: e[1], reverse=True)
         names = [item[0] for item in items]
@@ -79,9 +80,9 @@ def scrape(link, limit):
     links = get_links(link, limit)
     get_frequencies(links)
     write("frequencies.csv")
-    plot()
+    plot_bar()
 
 
 if __name__ == "__main__":
-    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 10)
+    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 50)
     
