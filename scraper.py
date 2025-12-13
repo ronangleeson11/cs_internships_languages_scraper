@@ -4,6 +4,7 @@ import csv
 import matplotlib.pyplot as plt
 import re
 import string
+import os
 from keywords import keywords
 
 LIMIT = 20 # number of application links to scrape
@@ -95,17 +96,19 @@ def write(out):
 
 def plot_bar():
     def plot_category(category_dict, name):
-        items = sorted(category_dict.items(), key=lambda e: e[1], reverse=True)
+        items = sorted(category_dict.items(), key=lambda e: e[1][0], reverse=True)
         names = [item[0] for item in items]
-        values = [item[1] for item in items]
+        counts = [item[1][0] for item in items]
         plt.clf()
-        plt.bar(names, values, color="skyblue")
+        plt.bar(names, counts, color="skyblue")
         plt.title(name + " Frequencies")
         plt.xlabel("Keywords")
         plt.ylabel("Frequencies")
         plt.xticks(rotation=45)
         plt.tight_layout()
+        os.makedirs("figs", exist_ok=True)
         plt.savefig(f"figs/{name.lower()}_frequency_plot.png", dpi=300, bbox_inches="tight")
+        
     for name, category in keywords.items():
         plot_category(category, name)
 
