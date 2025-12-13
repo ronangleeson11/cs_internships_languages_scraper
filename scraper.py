@@ -7,14 +7,26 @@ import string
 from keywords import keywords
 
 LIMIT = 20 # number of application links to scrape
+URLS = [
+    "https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file"
+]
 
-def get_links(url, limit):
-    link = requests.get(url)
-    soup = BeautifulSoup(link.text, 'html.parser')
-    div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
-    table = div.find("table") # Get internship listing
-    all_links = table.find_all("a") # Get all links in internship listing
-    links = [link for link in all_links if "simplify.jobs" not in link.get("href").lower()]
+def get_links(urls, limit):
+    ret = []
+    i = len(urls)
+    for url in urls:
+        link = requests.get(url)
+        soup = BeautifulSoup(link.text, 'html.parser')
+        div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
+        table = div.find("table") # Get internship listing
+        all_links = table.find_all("a") # Get all links in internship listing
+        links = [link for link in all_links if "simplify.jobs" not in link.get("href").lower()]
+        for link in links:
+            if len(ret) >=  limit / i:
+                break
+            if link not in ret:
+                ret.append(link) # Avoid duplicates TODO: strip source attribute
+        i -= 1        
     return links[:limit]
 
 
@@ -90,13 +102,13 @@ def plot_bar():
         plot_category(category, name)
 
 
-def scrape(link, limit):
-    links = get_links(link, limit)
-    get_frequencies(links)
+def scrape(urls, limit):
+    app_links = get_links(urls, limit)
+    get_frequencies(app_links)
     write("frequencies.csv")
     plot_bar()
 
 
 if __name__ == "__main__":
-    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", LIMIT)
+    scrape(URLS, LIMIT)
     
