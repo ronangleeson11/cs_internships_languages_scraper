@@ -85,7 +85,7 @@ def plot_bar():
         plt.ylabel("Frequencies")
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.savefig(f"figs/{name}_frequency_plot.png", dpi=300, bbox_inches="tight")
+        plt.savefig(f"figs/{name.lower()}_frequency_plot.png", dpi=300, bbox_inches="tight")
     for name, category in keywords.items():
         plot_category(category, name)
 
