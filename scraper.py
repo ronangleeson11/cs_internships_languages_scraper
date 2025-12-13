@@ -74,19 +74,20 @@ def write(out):
 
 
 def plot_bar():
-    def plot_category(category_dict, title):
+    def plot_category(category_dict, name):
         items = sorted(category_dict.items(), key=lambda e: e[1], reverse=True)
         names = [item[0] for item in items]
         values = [item[1] for item in items]
-        plt.bar(names, values, color='skyblue')
-        plt.title(title)
-        plt.xlabel('Items')
-        plt.ylabel('Frequencies')
+        plt.clf()
+        plt.bar(names, values, color="skyblue")
+        plt.title(name + " Frequencies")
+        plt.xlabel("Keywords")
+        plt.ylabel("Frequencies")
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.show()
+        plt.savefig(f"{name}_frequency_plot.png", dpi=300, bbox_inches="tight")
     for name, category in keywords.items():
-        plot_category(category, f"{name} Frequency")
+        plot_category(category, name)
 
 
 def scrape(link, limit):
