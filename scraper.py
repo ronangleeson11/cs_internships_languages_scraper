@@ -2,8 +2,10 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import re
 import string
+import os
 from keywords import keywords
 
 LIMIT = 20 # number of application links to scrape
@@ -36,6 +38,7 @@ def get_links(urls, limit):
 def get_frequencies(links):
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; scraper/1.0)"}) # Set a user-agent to avoid being blocked
+    num_successes = 0
     for href in links:
         if not href:
             continue
@@ -61,6 +64,7 @@ def get_frequencies(links):
                     largest = max(candidates, key=lambda t: len(t.get_text(strip=True)))
                     app_text = largest.get_text(separator=' ', strip=True)
             print(app_text[:100] + "...")
+            num_successes += 1
         except Exception as e:
             print(f"Failed to fetch {href}: {e}")
             app_text = href
@@ -68,7 +72,11 @@ def get_frequencies(links):
             for key in category.keys():
                 if check_present(key, app_text):
                     print(f"Found {name}: {key}")
-                    category[key] += 1
+                    category[key][0] += 1
+    for name, category in keywords.items():
+        for key in category.keys():
+            if num_successes > 0:
+                category[key][1] = int(category[key][0] / num_successes * 100) # Convert to percentage          
 
 
 def check_present(key, text):
@@ -89,17 +97,31 @@ def write(out):
 
 def plot_bar():
     def plot_category(category_dict, name):
-        items = sorted(category_dict.items(), key=lambda e: e[1], reverse=True)
+        items = sorted(category_dict.items(), key=lambda e: e[1][0], reverse=True)
         names = [item[0] for item in items]
-        values = [item[1] for item in items]
+        counts = [item[1][0] for item in items]
+        ratios = [item[1][1] for item in items]
         plt.clf()
-        plt.bar(names, values, color="skyblue")
+        plt.bar(names, counts, color="skyblue")
         plt.title(name + " Frequencies")
         plt.xlabel("Keywords")
         plt.ylabel("Frequencies")
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.savefig(f"figs/{name.lower()}_frequency_plot.png", dpi=300, bbox_inches="tight")
+        os.makedirs("figs", exist_ok=True)
+        plt.savefig(f"figs/{name.lower()}_count_frequency_plot.png", dpi=300, bbox_inches="tight")
+        plt.clf()
+        plt.bar(names, ratios, color="orange")
+        plt.title(name + " Frequencies")
+        plt.xlabel("Keywords")
+        plt.ylabel("Frequencies")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.ylim(0, 100)
+        plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter(xmax=100))
+        os.makedirs("figs", exist_ok=True)
+        plt.savefig(f"figs/{name.lower()}_ratio_frequency_plot.png", dpi=300, bbox_inches="tight")
+        
     for name, category in keywords.items():
         plot_category(category, name)
 
