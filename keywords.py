@@ -43,4 +43,9 @@ deployment = {
     "Kubernetes": 0
 }
 
-keywords = [languages, frameworks, libraries, deployment]
+keywords = {
+    "Languages": languages,
+    "Frameworks": frameworks,
+    "Libraries": libraries,
+    "Deployment": deployment
+}

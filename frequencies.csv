@@ -1,4 +1,4 @@
-"{'Python': 8, 'Java': 4, 'C': 7, 'C++': 5, 'C#': 1, 'JavaScript': 3, 'Ruby': 0, 'Go': 3, 'PHP': 0, 'Swift': 1, 'Kotlin': 0, 'TypeScript': 1, 'SQL': 3}",Frequency
+Languages,Frequency
 Python,8
 C,7
 C++,5
@@ -12,7 +12,7 @@ TypeScript,1
 Ruby,0
 PHP,0
 Kotlin,0
-"{'Django': 0, 'Flask': 0, 'React': 1, 'Angular': 1, 'Vue': 0, 'Node': 1, 'Rails': 0, 'Laravel': 0, '.NET': 1}",Frequency
+Frameworks,Frequency
 React,1
 Angular,1
 Node,1
@@ -22,14 +22,14 @@ Flask,0
 Vue,0
 Rails,0
 Laravel,0
-"{'NumPy': 0, 'Pandas': 0, 'TensorFlow': 0, 'PyTorch': 0, 'jQuery': 0, 'Lodash': 0}",Frequency
+Libraries,Frequency
 NumPy,0
 Pandas,0
 TensorFlow,0
 PyTorch,0
 jQuery,0
 Lodash,0
-"{'Docker': 0, 'AWS': 2, 'Azure': 1, 'GCP': 0, 'Kubernetes': 0}",Frequency
+Deployment,Frequency
 AWS,2
 Azure,1
 Docker,0
