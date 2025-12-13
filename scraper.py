@@ -8,26 +8,28 @@ from keywords import keywords
 
 LIMIT = 20 # number of application links to scrape
 URLS = [
-    "https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file"
+    "https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file",
+    "https://github.com/vanshb03/Summer2026-Internships"
 ]
 
 def get_links(urls, limit):
     ret = []
-    i = len(urls)
+    limit_per_url = limit / len(urls)
     for url in urls:
+        i = 0
         link = requests.get(url)
         soup = BeautifulSoup(link.text, 'html.parser')
         div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
         table = div.find("table") # Get internship listing
         all_links = table.find_all("a") # Get all links in internship listing
-        links = [link for link in all_links if "simplify.jobs" not in link.get("href").lower()]
+        links = [link for link in all_links if "simplify.jobs" not in link.get("href").lower()] # Remove unwanted links
         for link in links:
-            if len(ret) >=  limit / i:
+            if i >= limit_per_url:
                 break
             if link not in ret:
                 ret.append(link) # Avoid duplicates TODO: strip source attribute
-        i -= 1        
-    return links[:limit]
+                i += 1    
+    return ret
 
 
 def get_frequencies(links):
