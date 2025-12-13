@@ -99,6 +99,7 @@ def plot_bar():
         items = sorted(category_dict.items(), key=lambda e: e[1][0], reverse=True)
         names = [item[0] for item in items]
         counts = [item[1][0] for item in items]
+        ratios = [item[1][1] for item in items]
         plt.clf()
         plt.bar(names, counts, color="skyblue")
         plt.title(name + " Frequencies")
@@ -107,7 +108,16 @@ def plot_bar():
         plt.xticks(rotation=45)
         plt.tight_layout()
         os.makedirs("figs", exist_ok=True)
-        plt.savefig(f"figs/{name.lower()}_frequency_plot.png", dpi=300, bbox_inches="tight")
+        plt.savefig(f"figs/{name.lower()}_count_frequency_plot.png", dpi=300, bbox_inches="tight")
+        plt.clf()
+        plt.bar(names, ratios, color="orange")
+        plt.title(name + " Frequencies")
+        plt.xlabel("Keywords")
+        plt.ylabel("Frequencies")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        os.makedirs("figs", exist_ok=True)
+        plt.savefig(f"figs/{name.lower()}_ratio_frequency_plot.png", dpi=300, bbox_inches="tight")
         
     for name, category in keywords.items():
         plot_category(category, name)
