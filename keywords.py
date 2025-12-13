@@ -34,3 +34,13 @@ libraries = {
     "jQuery": 0,
     "Lodash": 0
 }
+
+deployment = {
+    "Docker": 0,
+    "AWS": 0,
+    "Azure": 0,
+    "GCP": 0,
+    "Kubernetes": 0
+}
+
+keywords = [languages, frameworks, libraries, deployment]

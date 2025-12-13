@@ -4,7 +4,7 @@ import csv
 import matplotlib.pyplot as plt
 import re
 import string
-from keywords import languages, frameworks, libraries
+from keywords import languages, frameworks, libraries, deployment, keywords
 
 
 def get_links(url, limit):
@@ -50,18 +50,24 @@ def get_frequencies(links):
         except Exception as e:
             print(f"Failed to fetch {href}: {e}")
             app_text = link.get_text(strip=True)
-        for language in languages.keys():
-            if check_present(language, app_text):
-                print(f"Found language: {language}")
-                languages[language] += 1
-        for framework in frameworks.keys():
-            if check_present(framework, app_text):
-                print(f"Found framework: {framework}")
-                frameworks[framework] += 1
-        for library in libraries.keys():
-            if check_present(library, app_text):
-                print(f"Found library: {library}")
-                libraries[library] += 1
+        for (category) in keywords:
+            for (key) in category.keys():
+                if check_present(key, app_text):
+                    print(f"Found {category}: {key}")
+                    category[key] += 1
+              
+        # for language in languages.keys():
+        #     if check_present(language, app_text):
+        #         print(f"Found language: {language}")
+        #         languages[language] += 1
+        # for framework in frameworks.keys():
+        #     if check_present(framework, app_text):
+        #         print(f"Found framework: {framework}")
+        #         frameworks[framework] += 1
+        # for library in libraries.keys():
+        #     if check_present(library, app_text):
+        #         print(f"Found library: {library}")
+        #         libraries[library] += 1
 
 
 def check_present(key, text):
@@ -73,18 +79,23 @@ def check_present(key, text):
 def write(out):
     with open(out, "w", newline='', encoding='utf-8') as out:
         writer = csv.writer(out)
-        languages_sorted = sorted(languages.items(), key=lambda e: e[1], reverse=True)
-        frameworks_sorted = sorted(frameworks.items(), key=lambda e: e[1], reverse=True)
-        libraries_sorted = sorted(libraries.items(), key=lambda e: e[1], reverse=True)
-        writer.writerow(["Languages", "Frequency"])
-        for (language) in languages_sorted:
-            writer.writerow([language[0], language[1]])
-        writer.writerow(["Frameworks", "Frequency"])    
-        for (framework) in frameworks_sorted:
-            writer.writerow([framework[0], framework[1]])
-        writer.writerow(["Libraries", "Frequency"])    
-        for (library) in libraries_sorted:
-            writer.writerow([library[0], library[1]])
+        # languages_sorted = sorted(languages.items(), key=lambda e: e[1], reverse=True)
+        # frameworks_sorted = sorted(frameworks.items(), key=lambda e: e[1], reverse=True)
+        # libraries_sorted = sorted(libraries.items(), key=lambda e: e[1], reverse=True)
+        for (category) in keywords:
+            category_sorted = sorted(category.items(), key=lambda e: e[1], reverse=True)
+            writer.writerow([category, "Frequency"])
+            for (key) in category_sorted:
+                writer.writerow([key[0], key[1]])
+        # writer.writerow(["Languages", "Frequency"])
+        # for (language) in languages_sorted:
+        #     writer.writerow([language[0], language[1]])
+        # writer.writerow(["Frameworks", "Frequency"])    
+        # for (framework) in frameworks_sorted:
+        #     writer.writerow([framework[0], framework[1]])
+        # writer.writerow(["Libraries", "Frequency"])    
+        # for (library) in libraries_sorted:
+        #     writer.writerow([library[0], library[1]])
 
 
 def plot_bar():
@@ -99,10 +110,8 @@ def plot_bar():
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.show()
-
-    plot_category(languages, "Programming Languages Frequency")
-    plot_category(frameworks, "Frameworks Frequency")
-    plot_category(libraries, "Libraries Frequency")
+    for (category) in keywords:
+        plot_category(category, f"{category} Frequency")
 
 
 def scrape(link, limit):
@@ -113,5 +122,5 @@ def scrape(link, limit):
 
 
 if __name__ == "__main__":
-    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 100)
+    scrape("https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file", 20)
     
