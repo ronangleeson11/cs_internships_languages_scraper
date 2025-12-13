@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import re
 import string
 import os
@@ -116,6 +117,8 @@ def plot_bar():
         plt.ylabel("Frequencies")
         plt.xticks(rotation=45)
         plt.tight_layout()
+        plt.ylim(0, 100)
+        plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter(xmax=100))
         os.makedirs("figs", exist_ok=True)
         plt.savefig(f"figs/{name.lower()}_ratio_frequency_plot.png", dpi=300, bbox_inches="tight")
         
