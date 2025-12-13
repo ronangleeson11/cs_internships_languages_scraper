@@ -36,6 +36,7 @@ def get_links(urls, limit):
 def get_frequencies(links):
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; scraper/1.0)"}) # Set a user-agent to avoid being blocked
+    num_successes = 0
     for href in links:
         if not href:
             continue
@@ -61,6 +62,7 @@ def get_frequencies(links):
                     largest = max(candidates, key=lambda t: len(t.get_text(strip=True)))
                     app_text = largest.get_text(separator=' ', strip=True)
             print(app_text[:100] + "...")
+            num_successes += 1
         except Exception as e:
             print(f"Failed to fetch {href}: {e}")
             app_text = href
@@ -69,6 +71,9 @@ def get_frequencies(links):
                 if check_present(key, app_text):
                     print(f"Found {name}: {key}")
                     category[key] += 1
+    for name, category in keywords.items():
+        for key in category.keys():
+            category[key] = int(category[key] / num_successes * 100) # Convert to percentage          
 
 
 def check_present(key, text):
