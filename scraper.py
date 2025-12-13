@@ -26,8 +26,9 @@ def get_links(urls, limit):
         for link in links:
             if i >= limit_per_url:
                 break
-            if link not in ret:
-                ret.append(link) # Avoid duplicates TODO: strip source attribute
+            href = link.get("href")
+            if href and href.split("?", 1)[0] not in ret: # Avoid duplicates
+                ret.append(href.split("?", 1)[0]) # Remove URL parameters like source that hide duplicates
                 i += 1    
     return ret
 
@@ -35,8 +36,7 @@ def get_links(urls, limit):
 def get_frequencies(links):
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; scraper/1.0)"}) # Set a user-agent to avoid being blocked
-    for link in links:
-        href = link.get("href")
+    for href in links:
         if not href:
             continue
         print(f"{'-'*64}\nFetching: {href}")
@@ -63,7 +63,7 @@ def get_frequencies(links):
             print(app_text[:100] + "...")
         except Exception as e:
             print(f"Failed to fetch {href}: {e}")
-            app_text = link.get_text(strip=True)
+            app_text = href
         for name, category in keywords.items(): # Check for presence of each keyword in the application text
             for key in category.keys():
                 if check_present(key, app_text):
