@@ -8,10 +8,11 @@ import string
 import os
 from keywords import keywords
 
-LIMIT = 20 # number of application links to scrape
+LIMIT = 300 # number of application links to scrape
 URLS = [
     "https://github.com/SimplifyJobs/Summer2026-Internships?tab=readme-ov-file",
-    "https://github.com/vanshb03/Summer2026-Internships"
+    "https://github.com/vanshb03/Summer2026-Internships",
+    "https://github.com/Zackhardtoname/internships"
 ]
 
 def get_links(urls, limit):
