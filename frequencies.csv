@@ -1,37 +1,37 @@
 Languages,Frequency
-Python,8
-C,6
-C++,5
-Go,4
-Java,3
-C#,1
-JavaScript,1
-SQL,1
-Ruby,0
-PHP,0
-Swift,0
-Kotlin,0
-TypeScript,0
+Python,"[8, 50]"
+C,"[6, 37]"
+C++,"[5, 31]"
+Go,"[4, 25]"
+Java,"[3, 18]"
+C#,"[1, 6]"
+JavaScript,"[1, 6]"
+SQL,"[1, 6]"
+Ruby,"[0, 0]"
+PHP,"[0, 0]"
+Swift,"[0, 0]"
+Kotlin,"[0, 0]"
+TypeScript,"[0, 0]"
 Frameworks,Frequency
-React,1
-Angular,1
-Vue,1
-Node,1
-.NET,1
-Django,0
-Flask,0
-Rails,0
-Laravel,0
+React,"[1, 6]"
+Angular,"[1, 6]"
+Vue,"[1, 6]"
+Node,"[1, 6]"
+.NET,"[1, 6]"
+Django,"[0, 0]"
+Flask,"[0, 0]"
+Rails,"[0, 0]"
+Laravel,"[0, 0]"
 Libraries,Frequency
-TensorFlow,2
-PyTorch,2
-NumPy,0
-Pandas,0
-jQuery,0
-Lodash,0
+TensorFlow,"[2, 12]"
+PyTorch,"[2, 12]"
+NumPy,"[0, 0]"
+Pandas,"[0, 0]"
+jQuery,"[0, 0]"
+Lodash,"[0, 0]"
 Deployment,Frequency
-Docker,2
-GCP,2
-Kubernetes,2
-AWS,0
-Azure,0
+Docker,"[2, 12]"
+GCP,"[2, 12]"
+Kubernetes,"[2, 12]"
+AWS,"[0, 0]"
+Azure,"[0, 0]"
