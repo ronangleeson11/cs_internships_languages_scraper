@@ -70,10 +70,11 @@ def get_frequencies(links):
             for key in category.keys():
                 if check_present(key, app_text):
                     print(f"Found {name}: {key}")
-                    category[key] += 1
+                    category[key][0] += 1
     for name, category in keywords.items():
         for key in category.keys():
-            category[key] = int(category[key] / num_successes * 100) # Convert to percentage          
+            if num_successes > 0:
+                category[key][1] = int(category[key][0] / num_successes * 100) # Convert to percentage          
 
 
 def check_present(key, text):
