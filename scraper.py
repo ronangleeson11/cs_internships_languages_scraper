@@ -96,7 +96,7 @@ def write(out):
                 writer.writerow([key[0], key[1]])
 
 
-def plot_bar():
+def plot_bar(): # TODO: Find a better way to format data
     def plot_category(category_dict, name):
         items = sorted(category_dict.items(), key=lambda e: e[1][0], reverse=True)
         names = [item[0] for item in items]
