@@ -22,7 +22,8 @@ def get_links(urls, limit):
         i = 0
         link = requests.get(url)
         soup = BeautifulSoup(link.text, 'html.parser')
-        div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
+        # div = soup.find('div', attrs={"class": "OverviewRepoFiles-module__Box_1--xSt0T"}) # Get README
+        div = soup.find('article', attrs={"class": "markdown-body"}) # Get README
         table = div.find("table") # Get internship listing
         all_links = table.find_all("a") # Get all links in internship listing
         links = [link for link in all_links if "simplify.jobs" not in link.get("href").lower()] # Remove unwanted links
